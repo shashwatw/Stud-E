@@ -5,7 +5,7 @@ interface GetChapterProps {
   userId: string;
   courseId: string;
   chapterId: string;
-};
+}
 
 export const getChapter = async ({
   userId,
@@ -18,8 +18,8 @@ export const getChapter = async ({
         userId_courseId: {
           userId,
           courseId,
-        }
-      }
+        },
+      },
     });
 
     const course = await db.course.findUnique({
@@ -29,14 +29,14 @@ export const getChapter = async ({
       },
       select: {
         price: true,
-      }
+      },
     });
 
     const chapter = await db.chapter.findUnique({
       where: {
         id: chapterId,
         isPublished: true,
-      }
+      },
     });
 
     if (!chapter || !course) {
@@ -47,42 +47,42 @@ export const getChapter = async ({
     let attachments: Attachment[] = [];
     let nextChapter: Chapter | null = null;
 
-    if (purchase) {
-      attachments = await db.attachment.findMany({
-        where: {
-          courseId: courseId
-        }
-      });
-    }
+    // if (purchase) {
+    attachments = await db.attachment.findMany({
+      where: {
+        courseId: courseId,
+      },
+    });
+    // }
 
-    if (chapter.isFree || purchase) {
-      muxData = await db.muxData.findUnique({
-        where: {
-          chapterId: chapterId,
-        }
-      });
+    // if (chapter.isFree || purchase) {
+    muxData = await db.muxData.findUnique({
+      where: {
+        chapterId: chapterId,
+      },
+    });
 
-      nextChapter = await db.chapter.findFirst({
-        where: {
-          courseId: courseId,
-          isPublished: true,
-          position: {
-            gt: chapter?.position,
-          }
+    nextChapter = await db.chapter.findFirst({
+      where: {
+        courseId: courseId,
+        isPublished: true,
+        position: {
+          gt: chapter?.position,
         },
-        orderBy: {
-          position: "asc",
-        }
-      });
-    }
+      },
+      orderBy: {
+        position: "asc",
+      },
+    });
+    // }
 
     const userProgress = await db.userProgress.findUnique({
       where: {
         userId_chapterId: {
           userId,
           chapterId,
-        }
-      }
+        },
+      },
     });
 
     return {
@@ -104,6 +104,6 @@ export const getChapter = async ({
       nextChapter: null,
       userProgress: null,
       purchase: null,
-    }
+    };
   }
-}
+};
