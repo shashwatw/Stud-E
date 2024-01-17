@@ -1,4 +1,4 @@
-# LearnIT|LMS Platform: Next.js 13,  React, Stripe, Mux, Prisma, Tailwind, MySQL
+# Stud-E|LMS Platform: Next.js 13,  React, Stripe, Mux, Prisma, Tailwind, MySQL
 
 Key Features:
 
